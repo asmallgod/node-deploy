@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 8081;
 app.get('/', async (req, res) => {
   const username = req.query.username || 'asmallgod';
   try {
-    const result = await axios.get(`https://api.github.com/${username}/repos`);
+    const result = await axios.get(`https://api.github.com/users/${username}/repos`);
     const repos = result.data.map(repo => ({
       name: repo.name,
       url: repo.html_url,
@@ -15,6 +15,7 @@ app.get('/', async (req, res) => {
     })).sort((a, b) => b.stars - a.stars);
     res.send(repos);
   } catch (err) {
+    console.error(err);
     res.status(400).send('Error while getting list of repositories');
   }
 });
